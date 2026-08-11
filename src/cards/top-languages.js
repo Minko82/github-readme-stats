@@ -19,6 +19,22 @@ const CARD_PADDING = 25;
 const COMPACT_LAYOUT_BASE_HEIGHT = 90;
 const MAXIMUM_LANGS_COUNT = 20;
 
+// Languages are recoloured from a palette that holds the profile accent's
+// saturation and lightness while spanning blue through purple to pink, so the
+// card stays in the same family as the rest of the README without collapsing
+// into one hue. Remove the langs.map() call in trimTopLanguages to restore
+// GitHub's per-language colours.
+const LANG_PALETTE = [
+  "#77a6c5",
+  "#778fc5",
+  "#7777c5",
+  "#8f77c5",
+  "#a877c5",
+  "#c277c5",
+  "#c577ae",
+  "#c57794",
+];
+
 const NORMAL_LAYOUT_DEFAULT_LANGS_COUNT = 5;
 const COMPACT_LAYOUT_DEFAULT_LANGS_COUNT = 6;
 const DONUT_LAYOUT_DEFAULT_LANGS_COUNT = 5;
@@ -192,6 +208,11 @@ const trimTopLanguages = (topLangs, langs_count, hide) => {
       return !langsToHide[lowercaseTrim(lang.name)];
     })
     .slice(0, langsCount);
+
+  langs = langs.map((lang, index) => ({
+    ...lang,
+    color: LANG_PALETTE[index % LANG_PALETTE.length],
+  }));
 
   const totalLanguageSize = langs.reduce((acc, curr) => acc + curr.size, 0);
 
